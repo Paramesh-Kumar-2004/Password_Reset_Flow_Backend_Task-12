@@ -109,7 +109,7 @@ export const ForgotPassword = async (req, res) => {
 
         await sendMail(
             user.email,
-            "Password Forget Link",
+            "Password Reset Link",
             `http://${req.host}/api/v1/resetpassword/${passwordRestToken}`
         )
 
