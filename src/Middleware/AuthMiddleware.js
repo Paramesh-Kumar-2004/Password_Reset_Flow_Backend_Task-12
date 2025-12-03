@@ -6,7 +6,7 @@ export const Authentication = async (req, res, next) => {
     try {
 
         const { token } = req.cookies;
-        const decode = jwtVerify(token);
+        const decode = await jwtVerify(token);
 
         if (!decode) {
             return res.status(401).json({
@@ -21,9 +21,7 @@ export const Authentication = async (req, res, next) => {
             });
         }
 
-        console.log("Fromm Auth :", user)
         req.user = user
-
 
     } catch (error) {
         console.log(error)
