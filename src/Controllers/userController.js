@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
 import { jwtSign, options } from "../Utils/JWT.js";
+import sendMail from "../Utils/SendMail.js";
 
 
 
@@ -92,7 +93,6 @@ export const ForgotPassword = async (req, res) => {
         console.log("Entered Into Forgot Password")
 
         const { email } = req.user;
-        console.log("Email :", email)
 
         const user = await User.findOne({ email })
 
@@ -106,6 +106,12 @@ export const ForgotPassword = async (req, res) => {
 
         user.passwordResetToken = passwordRestToken;
         await user.save()
+
+        await sendMail(
+            user.email,
+            "Password Forget Link",
+            `http://${req.host}/api/v1/resetpassword/${passwordRestToken}`
+        )
 
         res.status(200).json({
             message: "Forgot Mail Send To Your Email",
