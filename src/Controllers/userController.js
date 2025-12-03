@@ -91,8 +91,7 @@ export const ForgotPassword = async (req, res) => {
 
         console.log("Entered Into Forgot Password")
 
-        const email = "vp@gmail.com"
-        // const email = req.user.email || "vp@gmail.com"
+        const { email } = req.user;
         console.log(email)
 
         const user = await User.findOne({ email })
@@ -112,7 +111,6 @@ export const ForgotPassword = async (req, res) => {
             message: "Forgot Mail Send To Your Email",
             passwordRestToken,
         })
-
 
     } catch (error) {
         console.log(error)

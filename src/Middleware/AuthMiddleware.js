@@ -6,6 +6,23 @@ export const Authentication = async (req, res, next) => {
     try {
 
         const { token } = req.cookies;
+        const decode = jwtVerify(token);
+
+        if (!decode) {
+            return res.status(401).json({
+                message: "Unauthorized User"
+            });
+        }
+
+        const user = await User.findById(decode._id);
+        if (!user) {
+            return res.status(404).json({
+                message: "User Not Found"
+            });
+        }
+
+        console.log("Fromm Auth :", user)
+        req.user = user
 
 
     } catch (error) {
