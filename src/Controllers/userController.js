@@ -92,7 +92,7 @@ export const ForgotPassword = async (req, res) => {
         console.log("Entered Into Forgot Password")
 
         const { email } = req.user;
-        console.log(email)
+        console.log("Email :", email)
 
         const user = await User.findOne({ email })
 
