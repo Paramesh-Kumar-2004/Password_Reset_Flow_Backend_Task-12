@@ -131,28 +131,28 @@ export const ResetPassword = async (req, res) => {
     try {
         console.log("Entered Into Reset Password")
 
-        const resetToken = req.params;
+        const resetToken = req.params.resetToken;
         const { password } = req.body;
 
-        const decode = await jwtVerify(resetToken)
+        if (!resetToken) {
+            return res.status(404).json({ message: "Token Is Required" })
+        }
+        if (!password) {
+            return res.status(404).json({ message: "Password is Required" })
+        }
 
+        const decode = await jwtVerify(resetToken)
         if (!decode) {
-            return res.status(404).json({
-                message: "Token Invalid"
-            })
+            return res.status(404).json({ message: "Token Expired" })
         }
 
         const user = await User.findById(decode._id)
         if (!user) {
-            return res.status(404).json({
-                message: "User Not Found"
-            })
+            return res.status(404).json({ message: "User Not Found" })
         }
 
         if (user.passwordResetToken !== resetToken) {
-            return res.status(404).json({
-                message: "Token Invalid"
-            })
+            return res.status(404).json({ message: "Token Invalid" })
         }
 
         user.password = password;
@@ -168,8 +168,6 @@ export const ResetPassword = async (req, res) => {
         res.status(200).json({
             message: "Password Reset Successfully"
         })
-
-
 
     } catch (error) {
         console.log(error)

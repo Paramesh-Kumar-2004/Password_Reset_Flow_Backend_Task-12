@@ -10,14 +10,25 @@ export const options = {
 
 
 export async function jwtSign(_id) {
-    return jwt.sign(
-        { _id },
-        process.env.Secret_Key,
-        { expiresIn: process.env.Expires_In }
-    )
+    try {
+        return jwt.sign(
+            { _id },
+            process.env.Secret_Key,
+            { expiresIn: process.env.Expires_In }
+        )
+    } catch (error) {
+        console.log("JWT Sign Error :", error)
+        return null
+    }
 }
 
 
 export async function jwtVerify(token) {
-    return jwt.verify(token, process.env.Secret_Key)
+    try {
+        const decode = jwt.verify(token, process.env.Secret_Key)
+        return decode
+    } catch (error) {
+        console.log("JWT Verify Error :", error)
+        return null
+    }
 }
