@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
-import { jwtSign, options } from "../Utils/JWT.js";
+import { jwtSign, jwtVerify, options } from "../Utils/JWT.js";
 import sendMail from "../Utils/SendMail.js";
 
 
@@ -92,7 +92,7 @@ export const ForgotPassword = async (req, res) => {
 
         console.log("Entered Into Forgot Password")
 
-        const { email } = req.user;
+        const { email } = req.body;
 
         const user = await User.findOne({ email })
 
@@ -117,6 +117,59 @@ export const ForgotPassword = async (req, res) => {
             message: "Forgot Mail Send To Your Email",
             passwordRestToken,
         })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Intenal Server Error"
+        })
+    }
+}
+
+
+export const ResetPassword = async (req, res) => {
+    try {
+        console.log("Entered Into Reset Password")
+
+        const resetToken = req.params;
+        const { password } = req.body;
+
+        const decode = await jwtVerify(resetToken)
+
+        if (!decode) {
+            return res.status(404).json({
+                message: "Token Invalid"
+            })
+        }
+
+        const user = await User.findById(decode._id)
+        if (!user) {
+            return res.status(404).json({
+                message: "User Not Found"
+            })
+        }
+
+        if (user.passwordResetToken !== resetToken) {
+            return res.status(404).json({
+                message: "Token Invalid"
+            })
+        }
+
+        user.password = password;
+        user.passwordResetToken = undefined;
+        await user.save();
+
+        sendMail(
+            user.email,
+            "Password Reset Successfully",
+            `Your Password Has Been Reset Successfully`
+        )
+
+        res.status(200).json({
+            message: "Password Reset Successfully"
+        })
+
+
 
     } catch (error) {
         console.log(error)

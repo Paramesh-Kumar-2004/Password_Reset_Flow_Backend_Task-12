@@ -12,7 +12,8 @@ const router = express.Router()
 
 router.post("/register", RegisterUser)
 router.post("/login", LoginUser)
-router.get("/forgetpassword", Authentication, ForgotPassword)
+router.get("/forgetpassword", ForgotPassword)
+router.get("/forgetpassword", ForgotPassword)
 
 
 export default router
