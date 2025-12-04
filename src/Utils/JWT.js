@@ -17,7 +17,7 @@ export async function jwtSign(_id) {
             { expiresIn: process.env.Expires_In }
         )
     } catch (error) {
-        console.log("JWT Sign Error :", error)
+        // console.log("JWT Sign Error :", error)
         return null
     }
 }
@@ -28,7 +28,7 @@ export async function jwtVerify(token) {
         const decode = jwt.verify(token, process.env.Secret_Key)
         return decode
     } catch (error) {
-        console.log("JWT Verify Error :", error)
+        // console.log("JWT Verify Error :", error)
         return null
     }
 }
