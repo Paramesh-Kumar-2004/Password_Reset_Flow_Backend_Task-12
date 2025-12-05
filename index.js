@@ -8,6 +8,7 @@ import AuthRoutes from "./src/Routes/userRoutes.js"
 import { errorHandler } from "./src/Middleware/ErrorHandlerMiddleware.js"
 
 
+
 // Config
 const app = express()
 dotenv.config()
@@ -29,7 +30,6 @@ app.use("/api/v1/user", AuthRoutes)
 
 // Error Handler Middlewares !Must After Routes
 app.use(errorHandler)
-
 
 
 app.get("/", (req, res) => {
