@@ -2,27 +2,24 @@ import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
 import { jwtSign, jwtVerify, options } from "../Utils/JWT.js";
 import sendMail from "../Utils/SendMail.js";
+import { ApiError } from "../Middleware/ErrorHandlerMiddleWare.js";
 
 
 
-export const RegisterUser = async (req, res) => {
+export const RegisterUser = async (req, res, next) => {
     try {
         console.log("Entered Into Register User Controller")
 
         const { userName, email, password } = req.body;
 
         if (!userName || !email || !password) {
-            return res.status(404).json({
-                message: "Enter All The Fields"
-            })
+            return next(new ApiError("All Fields Are Required", 400))
         }
 
         const emailExist = await User.findOne({ email })
 
         if (emailExist) {
-            return res.status(404).json({
-                message: "This Email Already Registered"
-            })
+            return next(new ApiError("Email Already Exist", 400))
         }
 
         const user = await User.create({ userName, email, password })
@@ -34,10 +31,8 @@ export const RegisterUser = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: "Intenal Server Error"
-        })
+        console.log("Error From Register Controller", error)
+        return next(new ApiError("Internal Server Error", 500))
     }
 }
 
@@ -92,6 +87,8 @@ export const ForgotPassword = async (req, res) => {
         console.log("Entered Into Forgot Password")
 
         const { email } = req.body;
+        console.log(email)
+        console.log(req.body)
 
         const user = await User.findOne({ email })
 
@@ -109,7 +106,7 @@ export const ForgotPassword = async (req, res) => {
         await sendMail(
             user.email,
             "Password Reset Link",
-            `http://${req.host}/api/v1/resetpassword/${passwordRestToken}`
+            `${process.env.FRONTEND_URL}/#/resetpassword/${user._id}/${passwordRestToken}`
         )
 
         res.status(200).json({
