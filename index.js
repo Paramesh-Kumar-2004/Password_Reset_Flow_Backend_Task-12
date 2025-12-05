@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 
 import { ConnectDB } from "./src/DbConfig/ConnectDB.js"
 import AuthRoutes from "./src/Routes/userRoutes.js"
+import { errorHandler } from "./src/Middleware/ErrorHandlerMiddleware.js"
 
 
 // Config
@@ -22,8 +23,12 @@ app.use(cookieParser())
 ConnectDB()
 
 
-// APIs
+// APIs / Routes
 app.use("/api/v1/user", AuthRoutes)
+
+
+// Error Handler Middlewares !Must After Routes
+app.use(errorHandler)
 
 
 
