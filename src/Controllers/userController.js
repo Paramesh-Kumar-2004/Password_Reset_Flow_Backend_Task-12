@@ -27,7 +27,6 @@ export const RegisterUser = async (req, res) => {
 
         const user = await User.create({ userName, email, password })
 
-
         res.status(200).json({
             message: "User Register Successfully",
             userName,
