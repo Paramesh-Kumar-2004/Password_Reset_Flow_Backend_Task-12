@@ -125,14 +125,14 @@ export const ResetPassword = async (req, res) => {
     try {
         console.log("Entered Into Reset Password")
 
-        const resetToken = req.params.resetToken;
-        const { password } = req.body;
+        const { id, resetToken } = req.params;
+        const { resetPassword } = req.body;
 
         if (!resetToken) {
             return res.status(404).json({ message: "Token Is Required" })
         }
-        if (!password) {
-            return res.status(404).json({ message: "Password is Required" })
+        if (!resetPassword) {
+            return res.status(404).json({ message: "resetPassword is Required" })
         }
 
         const decode = await jwtVerify(resetToken)
@@ -149,7 +149,7 @@ export const ResetPassword = async (req, res) => {
             return res.status(404).json({ message: "Token Invalid" })
         }
 
-        user.password = password;
+        user.password = resetPassword;
         user.passwordResetToken = undefined;
         await user.save();
 

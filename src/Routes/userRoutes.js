@@ -14,7 +14,7 @@ const router = express.Router()
 router.post("/register", RegisterUser)
 router.post("/login", LoginUser)
 router.post("/forgetpassword", ForgotPassword)
-router.put("/resetpassword/:resetToken", ResetPassword)
+router.put("/resetpassword/:id/:resetToken", ResetPassword)
 
 
 export default router
