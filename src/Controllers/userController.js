@@ -81,6 +81,32 @@ export const LoginUser = async (req, res) => {
 
 
 
+export const GetUserDetails = async (req, res) => {
+    try {
+
+        console.log("Entered Into Get User Details")
+        const user = req.user
+        console.log(user)
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User Not Found"
+            })
+        }
+
+        res.status(404).json({
+            user
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Intenal Server Error"
+        })
+    }
+}
+
+
 export const ForgotPassword = async (req, res) => {
     try {
 
