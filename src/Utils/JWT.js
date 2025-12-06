@@ -2,13 +2,6 @@ import jwt from "jsonwebtoken"
 
 
 
-export const options = {
-    httpOnly: true,
-    sameSite: 'Strict',
-    // maxAge: 24 * 60 * 60 * 1000,
-}
-
-
 export async function jwtSign(_id) {
     try {
         return jwt.sign(

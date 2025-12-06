@@ -1,9 +1,17 @@
 import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
-import { jwtSign, jwtVerify, options } from "../Utils/JWT.js";
+import { jwtSign, jwtVerify } from "../Utils/JWT.js";
 import sendMail from "../Utils/SendMail.js";
 import { ApiError } from "../Middleware/ErrorHandlerMiddleWare.js";
 
+
+
+
+const cookieOptions = {
+    httpOnly: true,
+    sameSite: "Strict",
+    maxAge: 24 * 60 * 60 * 1000
+}
 
 
 export const RegisterUser = async (req, res, next) => {
@@ -63,7 +71,7 @@ export const LoginUser = async (req, res) => {
 
         if (verifyPassword) {
             res.status(200)
-                .cookie("token", token, options)
+                .cookie("token", token, cookieOptions)
                 .json({
                     message: "Login Successfull",
                     email: user.email,
