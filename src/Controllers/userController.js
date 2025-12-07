@@ -74,7 +74,8 @@ export const LoginUser = async (req, res) => {
             res.status(200)
                 .cookie("token", token, cookieOptions)
                 .json({
-                    message: "Login Successfull",
+                    message: "User Login Successfully",
+                    isAuth: true,
                     email: user.email,
                     token
                 })
@@ -103,6 +104,7 @@ export const GetUserDetails = async (req, res) => {
         }
 
         res.status(200).json({
+            message: "User Details Fetched Successfully",
             user
         })
         console.log("Users : \n", user)
