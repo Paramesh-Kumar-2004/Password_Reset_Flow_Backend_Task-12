@@ -8,10 +8,11 @@ import sendMail from "../Utils/SendMail.js";
 
 const cookieOptions = {
     httpOnly: true,
-    sameSite: "None",
     secure: true,
+    sameSite: "None",
     maxAge: 24 * 60 * 60 * 1000
-}
+};
+
 
 
 export const RegisterUser = async (req, res, next) => {
