@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
 import { jwtSign, jwtVerify } from "../Utils/JWT.js";
 import sendMail from "../Utils/SendMail.js";
-import { ApiError } from "../Middleware/ErrorHandlerMiddleWare.js";
 
 
 
@@ -22,13 +21,17 @@ export const RegisterUser = async (req, res, next) => {
         const { userName, email, password } = req.body;
 
         if (!userName || !email || !password) {
-            return next(new ApiError("All Fields Are Required", 400))
+            return res.status(400).json({
+                message: "All Fields Are Required"
+            })
         }
 
         const emailExist = await User.findOne({ email })
 
         if (emailExist) {
-            return next(new ApiError("Email Already Exist", 400))
+            return res.status(400).json({
+                message: "Email Already Exist"
+            })
         }
 
         const user = await User.create({ userName, email, password })
@@ -41,7 +44,9 @@ export const RegisterUser = async (req, res, next) => {
 
     } catch (error) {
         console.log("Error From Register Controller", error)
-        return next(new ApiError("Internal Server Error", 500))
+        return res.status(500).json({
+            message: "Internal Server Error"
+        })
     }
 }
 
