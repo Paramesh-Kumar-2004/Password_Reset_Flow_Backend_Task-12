@@ -18,6 +18,11 @@ const userSchema = mongoose.Schema({
     },
     passwordResetToken: {
         type: String,
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
     }
 }, { timestap: true })
 
@@ -27,7 +32,6 @@ userSchema.pre("save", async function () {
     if (!this.isModified("password")) return
     this.password = await bcrypt.hash(this.password, 14);
 })
-
 
 
 const User = mongoose.model("User", userSchema)
