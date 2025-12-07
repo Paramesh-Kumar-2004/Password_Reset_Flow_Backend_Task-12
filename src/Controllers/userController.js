@@ -96,7 +96,7 @@ export const GetUserDetails = async (req, res) => {
     try {
 
         console.log("Entered Into Get User Details")
-        const user = req.user
+        const user = await User.find()
 
         if (!user) {
             return res.status(404).json({
@@ -108,7 +108,7 @@ export const GetUserDetails = async (req, res) => {
             message: "User Details Fetched Successfully",
             user
         })
-        console.log("Users : \n", user)
+        // console.log("Users : \n", user)
 
     } catch (error) {
         console.log(error)
