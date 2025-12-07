@@ -32,3 +32,24 @@ export const Authentication = async (req, res, next) => {
     }
 }
 
+
+export const Authorization = (roles) => {
+    return (req, res, next) => {
+        try {
+
+            const user = req.user;
+            if (!roles.includes(user.role)) {
+                return res.status(403).json({
+                    message: "Forbidden : You Don't Have Permission To Access This Resource"
+                });
+            }
+            next();
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                message: "Intenal Server Error"
+            })
+        }
+    }
+}
