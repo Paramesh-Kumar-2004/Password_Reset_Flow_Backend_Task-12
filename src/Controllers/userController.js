@@ -9,7 +9,8 @@ import { ApiError } from "../Middleware/ErrorHandlerMiddleWare.js";
 
 const cookieOptions = {
     httpOnly: true,
-    sameSite: "Strict",
+    sameSite: "None",
+    secure: true,
     maxAge: 24 * 60 * 60 * 1000
 }
 
@@ -94,7 +95,6 @@ export const GetUserDetails = async (req, res) => {
 
         console.log("Entered Into Get User Details")
         const user = req.user
-        console.log(user)
 
         if (!user) {
             return res.status(404).json({
@@ -102,9 +102,10 @@ export const GetUserDetails = async (req, res) => {
             })
         }
 
-        res.status(404).json({
+        res.status(200).json({
             user
         })
+        console.log("Users : \n", user)
 
     } catch (error) {
         console.log(error)
@@ -138,7 +139,7 @@ export const ForgotPassword = async (req, res) => {
         await sendMail(
             user.email,
             "Password Reset Link",
-            `${process.env.FRONTEND_URL}/#/resetpassword/${user._id}/${passwordRestToken}`
+            `${process.env.FRONTEND_URL}/PasswordReset/#/resetpassword/${user._id}/${passwordRestToken}`
         )
 
         res.status(200).json({
