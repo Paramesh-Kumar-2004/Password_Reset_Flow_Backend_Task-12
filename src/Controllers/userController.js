@@ -150,7 +150,7 @@ export const ForgotPassword = async (req, res) => {
             "Password Reset Link",
             `${process.env.FRONTEND_URL}/PasswordReset/#/resetpassword/${user._id}/${passwordRestToken}`
         )
-
+    
         res.status(200).json({
             message: "Forgot Mail Send To Your Email",
             passwordRestToken,
