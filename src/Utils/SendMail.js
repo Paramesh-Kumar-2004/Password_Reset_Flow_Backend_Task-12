@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import e from 'cors';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
@@ -19,18 +18,12 @@ const sendMail = async (to, subject, text) => {
         text,
     };
     try {
-        return await transporter.sendMail(mailOptions);
+        return await transporter.sendMail(mailOptions)
+            .then(() => console.log("MAIL SENT"))
+            .catch(err => console.log("MAIL ERROR:", err));
     } catch (error) {
         console.log(error);
     }
 }
-
-// sendMail(process.env.EMAIL_USER, "Test Email", "This is a test email from Node.js")
-//     .then(() => {
-//         console.log("Email sent successfully");
-//     })
-//     .catch((error) => {
-//         console.error("Error sending email:", error);
-//     });
 
 export default sendMail;
