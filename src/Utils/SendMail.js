@@ -1,52 +1,21 @@
-// import nodemailer from 'nodemailer';
-// import dotenv from 'dotenv';
-// dotenv.config();
-
-// const transporter = nodemailer.createTransport({
-//     service: 'Gmail',
-//     auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//     },
-// });
-
-// const sendMail = async (to, subject, text) => {
-//     const mailOptions = {
-//         from: process.env.EMAIL_USER,
-//         to,
-//         subject,
-//         text,
-//     };
-//     try {
-//         return await transporter.sendMail(mailOptions)
-//             .then(() => console.log("MAIL SENT"))
-//             .catch(err => console.log("MAIL ERROR:", err));
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-// export default sendMail;
-
-
-
-
-
-
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 dotenv.config();
 
+
+
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.PASS_MAIL,
     pass: process.env.PASS_KEY,
   },
 });
 
-const sendEmail = async (to, subject, text) => {
+
+const sendMail = async (to, subject, text) => {
   const mailOptions = {
     from: process.env.PASS_MAIL,
     to,
@@ -54,11 +23,12 @@ const sendEmail = async (to, subject, text) => {
     text,
   };
   try {
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
+    return await transporter.sendMail(mailOptions)
+      .then(() => console.log("MAIL SENT"))
+      .catch(err => console.log("MAIL ERROR:", err));
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.log(error);
   }
-};
+}
 
-export default sendEmail;
+export default sendMail;
