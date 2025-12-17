@@ -1,44 +1,46 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-dotenv.config();
+
+// // Nodemailer
+// import nodemailer from 'nodemailer';
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.PASS_MAIL,
-    pass: process.env.PASS_KEY
-  }
-});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.PASS_MAIL,
+//     pass: process.env.PASS_KEY
+//   }
+// });
 
-const sendMail = async (to, subject, text) => {
-  try {
-    await transporter.sendMail({
-      from: process.env.PASS_MAIL,
-      to,
-      subject,
-      text
-    });
+// const sendMail = async (to, subject, text) => {
+//   try {
+//     await transporter.sendMail({
+//       from: process.env.PASS_MAIL,
+//       to,
+//       subject,
+//       text
+//     });
 
-    console.log("MAIL SENT TO:", to);
-  } catch (error) {
-    console.error("MAIL ERROR:", error);
-  }
-};
+//     console.log("MAIL SENT TO:", to);
+//   } catch (error) {
+//     console.error("MAIL ERROR:", error);
+//   }
+// };
 
-export default sendMail;
-
-
-
-
-
+// export default sendMail;
 
 
 
 
 
+
+
+
+
+// // Resend
 
 // import { Resend } from "resend";
 
@@ -63,3 +65,37 @@ export default sendMail;
 // };
 
 // export default sendMail;
+
+
+
+
+// Brevo
+import SibApiV3Sdk from "sib-api-v3-sdk";
+import dotenv from "dotenv";
+dotenv.config();
+
+const client = SibApiV3Sdk.ApiClient.instance;
+const apiKey = client.authentications["api-key"];
+apiKey.apiKey = process.env.BREVO_API_KEY;
+
+const transactionalEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
+
+const sendMail = async (to, subject, text) => {
+  try {
+    await transactionalEmailApi.sendTransacEmail({
+      sender: {
+        email: process.env.FROM_EMAIL,
+        name: process.env.FROM_NAME
+      },
+      to: [{ email: to }],
+      subject,
+      textContent: text
+    });
+
+    console.log("MAIL SENT TO Using Brevo :", to);
+  } catch (error) {
+    console.error("MAIL ERROR:", error);
+  }
+};
+
+export default sendMail;
