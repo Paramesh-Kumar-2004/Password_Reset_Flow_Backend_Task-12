@@ -10,7 +10,7 @@
 //   port: 587,
 //   secure: false,
 //   auth: {
-//     user: process.env.PASS_MAIL,
+//     user: process.env.FROM_EMAIL,
 //     pass: process.env.PASS_KEY
 //   }
 // });
@@ -18,7 +18,7 @@
 // const sendMail = async (to, subject, text) => {
 //   try {
 //     await transporter.sendMail({
-//       from: process.env.PASS_MAIL,
+//       from: process.env.FROM_EMAIL,
 //       to,
 //       subject,
 //       text
