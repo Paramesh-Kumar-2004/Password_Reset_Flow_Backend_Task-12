@@ -10,7 +10,7 @@ export const sendMail = async (to, subject, text) => {
     host: 'smtp.gmail.com',
     tls: {
       rejectUnauthorized: false
-   },
+    },
     port: 465,
     secure: false,
     auth: {
@@ -30,6 +30,7 @@ export const sendMail = async (to, subject, text) => {
       if (err) {
         reject(err);
       } else {
+        console.log("Mail Send Successfully")
         resolve(info);
       }
     });
@@ -48,6 +49,61 @@ export const sendMail = async (to, subject, text) => {
 
 
 
+// // Set SendGrid API key
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// /**
+//  * Send email using SendGrid API
+//  * @param {string} to - recipient email
+//  * @param {string} subject - mail subject
+//  * @param {string} text - mail content
+//  */
+// export const sendMail = async (to, subject, text) => {
+//   try {
+//     await sgMail.send({
+//       to,
+//       from: {
+//         email: process.env.FROM_EMAIL,
+//         name: process.env.FROM_NAME
+//       },
+//       subject,
+//       text,
+//       html: `<p>${text}</p>`
+//     });
+
+//     console.log("MAIL SENT USING SENDGRID TO:", to);
+//   } catch (error) {
+//     console.error(
+//       "MAIL ERROR:",
+//       error.response?.body || error.message
+//     );
+//   }
+// };
+
+
+
+
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// export const sendMail = async (to, subject, text) => {
+//   try {
+//     await sgMail.send({
+//       to,
+//       from: {
+//         email: process.env.FROM_EMAIL,
+//         name: process.env.FROM_NAME
+//       },
+//       subject,
+//       text
+//     });
+
+//     console.log("MAIL SENT USING SENDGRID TO :", to);
+//   } catch (error) {
+//     console.error("MAIL ERROR :", error);
+//   }
+// };
+
+// export default sendMail;
 
 
 
@@ -56,42 +112,37 @@ export const sendMail = async (to, subject, text) => {
 
 
 
+// export const sendMail = async (to, subject, text) => {
+//   const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     host: 'smtp.gmail.com',
+//     tls: {
+//       rejectUnauthorized: false
+//    },
+//     port: 465,
+//     secure: false,
+//     auth: {
+//       user: process.env.FROM_EMAIL,
+//       pass: process.env.PASS_KEY
+//     }
+//   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//   const mailData = {
+//     from: process.env.FROM_EMAIL,
+//     to,
+//     subject,
+//     text,
+//   };
+//   await new Promise((resolve, reject) => {
+//     transporter.sendMail(mailData, (err, info) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(info);
+//       }
+//     });
+//   });
+// };
 
 
 
