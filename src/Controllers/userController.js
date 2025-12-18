@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt"
 import User from "../Models/userModel.js"
 import { jwtSign, jwtVerify } from "../Utils/JWT.js";
-import sendMail from "../Utils/SendMail.js";
+import { sendMail } from "../Utils/SendMail.js";
+
 
 
 
