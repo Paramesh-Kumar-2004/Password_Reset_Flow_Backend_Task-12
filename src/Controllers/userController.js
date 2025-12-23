@@ -10,7 +10,7 @@ import { sendMail } from "../Utils/SendMail.js";
 const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "None",
+    sameSite: "lax", // SAME-ORIGIN SAFE
     maxAge: 24 * 60 * 60 * 1000
 };
 
