@@ -76,7 +76,11 @@ export const LoginUser = async (req, res) => {
 
         if (verifyPassword) {
             res.status(200)
-                .cookie("token", token, cookieOptions)
+                .cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none"
+                })
                 .json({
                     message: "User Login Successfully",
                     isAuth: true,
