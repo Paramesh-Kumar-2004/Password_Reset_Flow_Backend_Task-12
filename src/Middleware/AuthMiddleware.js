@@ -2,27 +2,24 @@ import User from "../Models/userModel.js";
 import { jwtVerify } from "../Utils/JWT.js";
 
 
+
 export const Authentication = async (req, res, next) => {
     try {
 
-        const { token } = req.cookies;
-        const decode = await jwtVerify(token);
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer "))
+            return res.status(401).json({ message: "Unauthorized - No Token" });
 
-        if (!decode) {
-            return res.status(401).json({
-                message: "Unauthorized User : Login And Try Again"
-            });
+        const token = authHeader.split(" ")[1];
+
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+            req.user = await User.findById(decoded.id).select("-password");
+            next();
+        } catch (error) {
+            return res.status(401).json({ message: "Invalid Token" });
         }
-
-        const user = await User.findById(decode._id);
-        if (!user) {
-            return res.status(404).json({
-                message: "User Not Found"
-            });
-        }
-
-        req.user = user
-        next()
 
     } catch (error) {
         console.log(error)
